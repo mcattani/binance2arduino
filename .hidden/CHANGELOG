@@ -1,0 +1,15 @@
+* Fri Mar 25 2022 The Nerdy Apprentice <marianocattani@gmail.com> 0.10.24
+- Corregido habilitar/deshabilitar el botón de desconexión según el estado de conexión
+- Quedan errores a corregir respecto al manejo de errores si se produce una desconexión del Arduino sin cerrar/desconectar el programa antes
+
+* Thu Mar 24 2022 The Nerdy Apprentice <marianocattani@gmail.com> 0.10.22
+- Al modificar el delay de envío de datos estos se envían inmediatamente
+- Corregido manejo de errores
+
+* Sat Mar 19 2022 The Nerdy Apprentice <marianocattani@gmail.com> 0.10.18
+- Agregado aviso cuando la paridad de criptomonedas elegida por el usuario es incorrecta
+- Bugs corregidos
+
+* Fri Mar 18 2022 The Nerdy Apprentice <marianocattani@gmail.com> 0.8.12
+- Lanzamiento inicial
+

@@ -1,0 +1,315 @@
+' Gambas class file
+
+' La función de este programa es la de obtener valores de criptomonedas utilizando la API de BiNANCE
+' y enviarla via el puerto serie a un Arduino para ser mostrada en un lcd de 16x2
+' Más información (incluido el stketch para Arduino) puede ser encontrado en: 
+' https://thenerdyapprentice.blogspot.com/
+' The Nerdy Apprentice
+
+Public Sub Form_Open()
+FMain.Title = Application.Title & " v." & Application.Version
+
+'Recuperamos las configuraciones guardadas
+txMoneda1.Text = Settings["Moneda1", txMoneda1.Text]
+txMoneda12.Text = Settings["Moneda12", txMoneda12.Text]
+txMoneda2.Text = Settings["Moneda2", txMoneda2.Text]
+txMoneda22.Text = Settings["Moneda22", txMoneda22.Text]
+sbSegundos.Value = Settings["Frecuencia", sbSegundos.Value]
+cbVelocidad.Index = Settings["Velocidad", cbVelocidad.Index]
+txPuerto.Text = Settings["Puerto", txPuerto.Text]
+
+
+End
+
+Public Sub Form_KeyPress()
+
+  If Key.code = Key.Esc Then 
+    GuardarValores()
+    Quit
+  Endif
+  
+End
+
+Public Sub btObtenerValor_Click()
+
+' Establecemos el valor de ambos timers, el que obtiene los datos de las criptos en inet y el que las envía al Arduino
+Timer1.Delay = sbSegundos.Value * 1000
+TimerDatos.Delay = sbSegundos.Value * 1000
+
+'Timer1.Enabled = True
+
+ObtenerValores()
+
+btConectar.Enabled = True
+
+End
+
+
+Public Sub ObtenerValores() 'Obtiene los valores de las textbox y los procesa para pasarlas a la siguiente función (ObtenerValorMoneda)
+Dim datosJson As Collection
+Dim Datos As String
+
+If txMoneda1.Text <> "" Then
+  If txMoneda1.Text <> "" Then
+    Datos = ObtenerValorMoneda(txMoneda1.Text & txMoneda12.Text)
+    datosJson = JSON.Decode(Datos)
+    txValor1.Text = datosJson["price"]
+    If txValor1.Text = "" Then ' Si el valor devuelto está en blanco es porque la paridad de moneda elegida es errónea
+      Message.Warning("La paridad de moneda elegida: " & txMoneda1.Text & "/" & txMoneda12.Text & " es inválida.")
+      Timer1.Enabled = False
+      Return  
+    Endif
+   
+   Endif
+  
+Endif
+
+If txMoneda2.Text <> "" Then
+  If txMoneda2.Text <> "" Then
+    Datos = ObtenerValorMoneda(txMoneda2.Text & txMoneda22.Text)
+    datosJson = JSON.Decode(Datos)
+    txValor2.Text = datosJson["price"]
+    If txValor2.Text = "" Then
+      Message.Warning("La paridad de moneda elegida: " & txMoneda2.Text & "/" & txMoneda22.Text & " es inválida.")
+      Timer1.Enabled = False
+      Return          
+    Endif
+   
+  Endif
+  
+Endif
+
+Timer1.Enabled = True
+
+
+End
+
+
+Public Function ObtenerValorMoneda(moneda As String) As String ' Función que que busca el valor de la moneda en inet
+Dim URL As String = "https://api.binance.com/api/v3/ticker/price?symbol="
+URL = URL & moneda
+
+client.URL = URL
+client.Async = False
+
+Try client.Get()
+If Error Then
+  Message.Warning(Error.Code & "" & Error.Text)
+  Return 
+Endif
+
+'Si ocurre un error
+If client.Status < 0 Then 
+  Return ""
+Endif
+
+'Si no hay datos disponibles
+If Not Lof(client) Then 
+  Return ""
+Endif
+
+'Lee la información del servidor y la devuelve como string
+Return Read #client, Lof(client)
+  
+End
+
+Public Sub Form_Close()
+
+Timer1.Enabled = False
+TimerDatos.Enabled = False
+If sPort.Status = Net.active Then sPort.Close
+GuardarValores()
+
+Quit 
+
+End
+
+Public Sub txMoneda1_Change() ' Convertimos las entradas del usuario en mayúsculas
+
+  txMoneda1.Text = UCase(txMoneda1.Text)
+  
+End
+
+Public Sub txMoneda12_Change()
+
+  txMoneda12.Text = UCase(txMoneda12.Text)
+  
+End
+
+Public Sub txMoneda2_Change()
+
+  txMoneda2.Text = UCase(txMoneda2.Text)
+  
+End
+
+Public Sub txMoneda22_Change()
+
+  txMoneda22.Text = UCase(txMoneda22.Text)
+  
+End
+
+Public Sub GuardarValores()
+'Guardamos todos los valores para recuperarlos al iniciar nuevamente el programa
+Settings["Moneda1"] = txMoneda1.Text
+Settings["Moneda12"] = txMoneda12.Text
+Settings["Moneda2"] = txMoneda2.Text
+Settings["Moneda22"] = txMoneda22.Text
+Settings["Frecuencia"] = sbSegundos.Value
+Settings["Puerto"] = txPuerto.Text
+Settings["Velocidad"] = cbVelocidad.Index
+
+End
+
+Public Sub btSalir_Click()
+
+Timer1.Enabled = False
+TimerDatos.Enabled = False
+If sPort.Status = Net.Active Then sPort.Close 
+GuardarValores()
+
+Quit 
+
+End
+
+Public Sub Timer1_Timer()
+
+ObtenerValores()
+
+End
+
+Public Sub sbSegundos_Change() ' Ajustamos el delay de los timers si cambia la cantidad de segundos 
+ 
+Timer1.Delay = sbSegundos.Value * 1000
+TimerDatos.Delay = sbSegundos.Value * 1000
+
+' Si la conexión está activa entonces enviamos los datos al Arduino
+' así evitamos que se cumpla el tiempo del delay antes de ver la información
+' en el LCD
+If sPort.Status = Net.Active Then
+  EnviarData()
+Endif
+
+End
+
+
+Public Sub btConectar_Click()
+
+If sPort.Status = Net.Active Then sPort.Close ' Cerramos el puerto si está abierto
+
+'Chequemos que haya un puerto escrito y lo asignamos
+If txPuerto.Text = "" Then
+  Message.Warning("Debe elegir un puerto para realizar la conexión")
+  Return
+  Else
+    sPort.PortName = txPuerto.Text
+    sPort.Speed = cbVelocidad.Text ' Asignamos también la velocidad.
+ Endif
+ 
+'Conectamos
+Try sPort.Open()
+If Error Then
+  Message.Warning("No se ha podido conectar con el puerto - " & Error.Text)
+  btDesconectar.Enabled = False 'Si se produce un error entonces desactivamos el botón de Desconectar
+  Else 
+    btDesconectar.Enabled = True 'Si no se produce lo activamos
+Endif
+
+If sPort.Status = Net.Active Then ' Si la conexión es exitosa
+  txSalidaConexion.Text = txSalidaConexion.Text & "Conectado..." & gb.CrLf
+  Wait 2 ' Pausa necesaria para que la función siguiente sea llamada, si no Gambas esperará hasta que se cumpla el tiempo de Timer1
+  EnviarData()
+  TimerDatos.Enabled = True
+  TimerDatos.Start
+     
+Endif
+
+End
+
+Public Sub btDesconectar_Click() 
+
+sPort.Close
+txSalidaConexion.Text = txSalidaConexion.Text & "Desconectado..." & gb.CrLf
+btDesconectar.Enabled = False
+TimerDatos.Enabled = False
+
+
+End
+
+Public Sub sPort_Read() ' Leemos lo que llega por el puerte serie y lo enviamos al textbox de salida
+Dim RX As String
+
+Try Read #sPort, RX, Lof(sPort)
+txSalidaConexion.Text = txSalidaConexion.Text & RX 
+
+If Error Then 
+  Message.Warning("Error en el puerto: " & Error.Text)
+  sPort.Close
+  txSalidaConexion.Text = txSalidaConexion.Text & "Desconectado..." & gb.CrLf
+  btDesconectar.Enabled = False
+  TimerDatos.Enabled = False
+Endif
+  
+
+End
+
+
+Public Sub EnviarData() ' Rutina para enviar la información al Arduino
+Dim Moneda1 As String, Moneda2 As String, Datos As String
+Dim Respuesta As String
+
+If txMoneda1.Text <> "" Then
+  Moneda1 = txMoneda1.Text & "/" & txMoneda12.Text & " " & txValor1.Text' Armamos la cadena para enviar al Arduino
+  Moneda1 = Left(Moneda1, 16) ' Recortamos los datos a enviar a 16 caracteres (máxima cantidad de caracteres que se puede mostrar en el LCD) 
+  Else 
+    Moneda1 = ""
+Endif
+
+If txMoneda2.Text <> "" Then 
+  Moneda2 = txMoneda2.Text & "/" & txMoneda22.Text & " " & txValor2.Text
+  Moneda2 = Left(Moneda2, 16)
+  Else 
+    Moneda2 = ""
+Endif
+
+' Enviamos los datos todos juntos, los volveremos a separar en el Arduino
+Datos = Moneda1 & Moneda2
+
+If SPort.Status = Net.Active Then 
+  Try Print #sPort, Datos
+    If Error Then
+      sPort.Close
+      TimerDatos.Enabled = False
+      Message.Warning(Error.Code & Error.Text)
+      Return 
+    Endif
+  Else 
+    Respuesta = Message.Warning("El puerto se ha cerrado!, debe volver a establecer la conexión o reiniciar la aplicación", "OK", "Reiniciar")
+      If Respuesta = 1 Then
+        sPort.Close
+        TimerDatos.Enabled = False
+        Else 
+          sPort.Close
+          Timer1.Enabled = False
+          TimerDatos.Enabled = False
+          GuardarValores()
+          Quit 
+          
+      Endif
+      
+Endif 
+
+
+End
+
+
+Public Sub TimerDatos_Timer()
+
+  EnviarData()    
+
+End
+
+Public Sub btAcerca_Click()
+
+  frmAbout.Show
+
+End

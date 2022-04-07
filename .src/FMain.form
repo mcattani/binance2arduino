@@ -1,0 +1,145 @@
+# Gambas Form File 3.0
+
+{ Form Form
+  MoveScaled(0,0,70,33)
+  Expand = True
+  Icon = Picture["icon.png"]
+  Resizable = False
+  AutoResize = True
+  { TrayIcon1 #TrayIcon
+    #MoveScaled(18,0)
+    Picture = Picture.Load("icon.png")
+  }
+  { Client #HttpClient
+    #MoveScaled(25,0)
+  }
+  { Label1 Label
+    MoveScaled(1,1,16,4)
+    Text = ("Monedas a buscar:")
+  }
+  { txMoneda1 TextBox
+    MoveScaled(1,6,8,4)
+    ToolTip = ("Moneda a buscar")
+    Alignment = Align.Center
+  }
+  { txMoneda12 TextBox
+    MoveScaled(12,6,8,4)
+    ToolTip = ("Moneda a buscar")
+    Alignment = Align.Center
+  }
+  { txMoneda2 TextBox
+    MoveScaled(1,11,8,4)
+    ToolTip = ("Moneda a buscar")
+    Alignment = Align.Center
+  }
+  { txMoneda22 TextBox
+    MoveScaled(12,11,8,4)
+    ToolTip = ("Moneda a buscar")
+    Alignment = Align.Center
+  }
+  { sbSegundos SpinBox
+    MoveScaled(24,16,7,4)
+    ToolTip = ("Cantidad de tiempo a buscar la cotización de la moneda en Binance")
+    Value = 5
+  }
+  { btObtenerValor Button
+    MoveScaled(1,21,17,4)
+    ToolTip = ("Obtener los valores de la/s moneda/s")
+    Text = ("Obtener Valores")
+  }
+  { txValor1 TextBox
+    MoveScaled(21,6,14,4)
+    NoTabFocus = True
+    ToolTip = ("Valor de la moneda")
+    Alignment = Align.Center
+    ReadOnly = True
+  }
+  { txValor2 TextBox
+    MoveScaled(21,11,14,4)
+    NoTabFocus = True
+    ToolTip = ("Valor de la moneda")
+    Alignment = Align.Center
+    ReadOnly = True
+  }
+  { Label2 Label
+    MoveScaled(1,16,23,4)
+    Text = ("Refrescar cada (segundos):")
+  }
+  { btSalir Button
+    MoveScaled(1,27,12,5)
+    ToolTip = ("Salir de aplicación")
+    Text = ("Salir")
+    Picture = Picture["icon:/24/quit"]
+  }
+  { Timer1 #Timer
+    #MoveScaled(19,19)
+  }
+  { Label3 Label
+    MoveScaled(9,6,3,4)
+    Font = Font["+5"]
+    Alignment = Align.Center
+    Text = ("/")
+  }
+  { Label4 Label
+    MoveScaled(9,11,3,4)
+    Font = Font["+5"]
+    Alignment = Align.Center
+    Text = ("/")
+  }
+  { frmConexion Frame
+    MoveScaled(36,0,33,32)
+    Text = ("Conexión")
+    { Label5 Label
+      MoveScaled(1,3,7,4)
+      Text = ("Puerto:")
+    }
+    { txPuerto TextBox
+      MoveScaled(8,3,23,4)
+      ToolTip = ("Puerto en el que está conectado el Arduino")
+      Text = ("/dev/ttyACM0")
+    }
+    { Label6 Label
+      MoveScaled(1,8,11,4)
+      Text = ("Velocidad:")
+    }
+    { cbVelocidad ComboBox
+      MoveScaled(11,8,20,4)
+      ToolTip = ("Velocidad de conexión")
+      ReadOnly = True
+      List = [("300"), ("600"), ("1200"), ("2400"), ("4800"), ("9600"), ("14400"), ("19200"), ("28800"), ("38400"), ("57600"), ("115200")]
+    }
+    { btConectar Button
+      MoveScaled(1,14,13,4)
+      Enabled = False
+      ToolTip = ("Conectar al Arduino")
+      Text = ("Conectar")
+      Picture = Picture["icon:/24/connect"]
+    }
+    { btDesconectar Button
+      MoveScaled(16,14,16,4)
+      Enabled = False
+      ToolTip = ("Desconectar del Arduino")
+      Text = ("Desconectar")
+      Picture = Picture["icon:/24/disconnect"]
+    }
+    { sPort #SerialPort
+      #MoveScaled(27,1)
+      FlowControl = SerialPort.None
+      Speed = 9600
+    }
+    { txSalidaConexion TextArea
+      MoveScaled(1,19,31,12)
+      ToolTip = ("Muestra estado de la conexión e información recibida desde el Arduino")
+      ReadOnly = True
+    }
+  }
+  { btAcerca Button
+    MoveScaled(19,27,16,5)
+    ToolTip = ("Información del Autor")
+    Text = ("Acerca de") & "..."
+    Picture = Picture["icon:/24/info"]
+  }
+  { TimerDatos #Timer
+    #MoveScaled(26,19)
+  }
+}

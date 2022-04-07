@@ -1,0 +1,31 @@
+Format: 1.0
+Source: binance2arduino
+Binary: binance2arduino
+Architecture: all source
+Version: 0.10.24-0ubuntu1
+Checksums-Md5:
+ 049b40163aa24c3f16b47c9c681c214f 1549 binance2arduino_0.10.24-0ubuntu1.dsc
+ d42f739265bfb78e6727437e0251b51c 251348 binance2arduino_0.10.24-0ubuntu1_all.deb
+Checksums-Sha1:
+ 560c72c06a4f5c45731900d7f3ee81f9a07e0a71 1549 binance2arduino_0.10.24-0ubuntu1.dsc
+ 9c89084755d1f40adcfcd171a24effef3f7c52e3 251348 binance2arduino_0.10.24-0ubuntu1_all.deb
+Checksums-Sha256:
+ a4e9e7d7fa55261effb1beb7f582a1fd59ae39e135f6d85d07e7abb7d1716ee8 1549 binance2arduino_0.10.24-0ubuntu1.dsc
+ 520d5ca7d01d52bb69fb3257cd49271a2cde67d08a4c53b651dda010c2cce6b4 251348 binance2arduino_0.10.24-0ubuntu1_all.deb
+Build-Origin: ArchLinux
+Build-Architecture: amd64
+Build-Date: Fri, 25 Mar 2022 18:49:39 -0300
+Environment:
+ DEB_BUILD_OPTIONS="parallel=4"
+ LANG="es_AR.UTF-8"
+ LC_ADDRESS="es_AR.UTF-8"
+ LC_ALL="es_AR.UTF-8"
+ LC_IDENTIFICATION="es_AR.UTF-8"
+ LC_MEASUREMENT="es_AR.UTF-8"
+ LC_MONETARY="es_AR.UTF-8"
+ LC_NAME="es_AR.UTF-8"
+ LC_NUMERIC="es_AR.UTF-8"
+ LC_PAPER="es_AR.UTF-8"
+ LC_TELEPHONE="es_AR.UTF-8"
+ LC_TIME="es_AR.UTF-8"
+ SOURCE_DATE_EPOCH="1648209600"
