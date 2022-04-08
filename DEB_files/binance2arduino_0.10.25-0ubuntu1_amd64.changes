@@ -1,0 +1,31 @@
+Format: 1.8
+Date: Thu, 07 Apr 2022 12:00:00 +0000
+Source: binance2arduino
+Binary: binance2arduino
+Architecture: source all
+Version: 0.10.25-0ubuntu1
+Distribution: unstable
+Urgency: low
+Maintainer: The Nerdy Apprentice <marianocattani@gmail.com>
+Changed-By: The Nerdy Apprentice <marianocattani@gmail.com>
+Description:
+ binance2arduino - Programa que toma valores de criptomonedas de la API de Binance .
+Changes:
+ binance2arduino (0.10.25-0ubuntu1) unstable; urgency=low
+ .
+   * Cambio al mostrar la versión del programa
+Checksums-Sha1:
+ b73c08a5ad11d1caa5de13666c250dcbbc317cc4 1549 binance2arduino_0.10.25-0ubuntu1.dsc
+ c8ea876d61030007f3fd72b758f8ca862e5459c6 1866 binance2arduino_0.10.25-0ubuntu1.diff.gz
+ 704c677ebddbeded987f6526d9c1ffb8eff983ff 747176 binance2arduino_0.10.25-0ubuntu1_all.deb
+ 303c3c3a3f0f52b3c8c337f1f79cd23571cdb167 1167 binance2arduino_0.10.25-0ubuntu1_amd64.buildinfo
+Checksums-Sha256:
+ 15270930e438e50ae32fe4822fe721cdebcfd93b768a70194e5454dc50f73454 1549 binance2arduino_0.10.25-0ubuntu1.dsc
+ cd4530283c0488488a4e8a8de465f4f262f2f6d63f8de678b96728a9892362bc 1866 binance2arduino_0.10.25-0ubuntu1.diff.gz
+ 23913af510274022d825ba05258fd29b0b648cce54eadf457a45bb4f64598108 747176 binance2arduino_0.10.25-0ubuntu1_all.deb
+ d6a65ef0ede19a3c8cdf54f37596304e858da19e6dc7d1bc51eacd661d7d582c 1167 binance2arduino_0.10.25-0ubuntu1_amd64.buildinfo
+Files:
+ 73dece53fabcc4544de9848efc215eb4 1549 contrib/utils optional binance2arduino_0.10.25-0ubuntu1.dsc
+ 2135990cef73f7f5f95a5b90764a535b 1866 contrib/utils optional binance2arduino_0.10.25-0ubuntu1.diff.gz
+ bae2143047bb0235ab5989f685e38f7a 747176 contrib/utils optional binance2arduino_0.10.25-0ubuntu1_all.deb
+ 3b0b3b636f968cc4bc075f648df68ae6 1167 contrib/utils optional binance2arduino_0.10.25-0ubuntu1_amd64.buildinfo

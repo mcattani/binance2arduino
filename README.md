@@ -1,5 +1,5 @@
 # binance2arduino
-v0.10.24
+v0.10.25
 
 **Binance2Arduino** es una aplicación que busca la cotización de hasta dos criptomonedas mediante la web de Binance y la envía a un *Arduino UNO* para ser desplegada en un display LCD.
 

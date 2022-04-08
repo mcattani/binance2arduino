@@ -7,7 +7,7 @@
 ' The Nerdy Apprentice
 
 Public Sub Form_Open()
-FMain.Title = Application.Title & " v." & Application.Version
+FMain.Title = Application.Title & " v" & Application.Version
 
 'Recuperamos las configuraciones guardadas
 txMoneda1.Text = Settings["Moneda1", txMoneda1.Text]

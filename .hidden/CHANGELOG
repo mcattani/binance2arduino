@@ -1,3 +1,6 @@
+* Thu Apr 07 2022 The Nerdy Apprentice <marianocattani@gmail.com> 0.10.25
+- Cambio al mostrar la versión del programa
+
 * Fri Mar 25 2022 The Nerdy Apprentice <marianocattani@gmail.com> 0.10.24
 - Corregido habilitar/deshabilitar el botón de desconexión según el estado de conexión
 - Quedan errores a corregir respecto al manejo de errores si se produce una desconexión del Arduino sin cerrar/desconectar el programa antes
